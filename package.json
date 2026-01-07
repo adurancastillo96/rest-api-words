@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "express": "^5.1.0",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0"
   },
   "name": "rest-api-words",
   "version": "1.0.0",
   "description": "Vamos a desarrollar una nueva REST API con el objetivo de explicar algunos de los principios a seguir cuando creamos una REST API",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",

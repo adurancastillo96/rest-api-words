@@ -2,6 +2,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
+const _ = require("lodash");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,8 +17,16 @@ app.use(express.static(path.join(__dirname, "public")));
 // Endpoints
 
 // Iteración 1
+app.get('/api/v1/words', (req, res) => {
+  const randomWord = _.sample(words);
+
+  res.status(200).json({
+    word: randomWord
+  });
+});
 
 // Iteración 2
+
 
 // Iteración 3
 
