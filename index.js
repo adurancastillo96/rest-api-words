@@ -10,13 +10,16 @@ const PORT = process.env.PORT || 3000;
 // Cargar palabras desde archivo
 const words = require("./data/words.json");
 
+// Definimos idiomas soportados
+const LANGUAGES = ["zh", "pt-br", "es", "de", "it", "fr"];
+
 // Middleware
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Endpoints
 
-// Iteración 1
+// Iteración 1 y 2
 app.get('/api/v1/words', (req, res) => {
   const { length } = req.query;
 
@@ -38,13 +41,14 @@ app.get('/api/v1/words', (req, res) => {
   });
 });
 
-// Iteración 2
-
-
 // Iteración 3
+app.get('/api/v2/languages', (req, res) => {
+  res.status(200).json({
+    languages: LANGUAGES
+  });
+});
 
 // Iteración 4
-
 
 // 404 para rutas no existentes
 app.use((req, res) => {
