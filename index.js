@@ -18,7 +18,20 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Iteración 1
 app.get('/api/v1/words', (req, res) => {
-  const randomWord = _.sample(words);
+  const { length } = req.query;
+
+  let wordList = words;
+
+  if (length) {
+    const lengthInt = parseInt(length);
+    wordList = _.filter(words, (word) => word.length === lengthInt);
+  }
+
+  if (wordList.length === 0) {
+    return res.status(404).end('Not Found');
+  }
+
+  const randomWord = _.sample(wordList);
 
   res.status(200).json({
     word: randomWord
