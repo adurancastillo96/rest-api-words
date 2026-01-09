@@ -68,7 +68,10 @@ app.get('/api/v2/words', async (req, res) => {
   try {
     const response = await fetch(apiUrl.toString());
 
-    if (!response.ok) res.status(404).end('Error en la API externa');
+    if (!response.ok) {
+      res.status(404).end('Error en la API externa');
+      return;
+    }
 
     const data = await response.json();
 
