@@ -7,9 +7,11 @@
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 </head>
 <body>
-  <main class="container">
-    <h1>REST API Words</h1>
-    <p>Esta API te permite obtener palabras aleatorias.</p>
+<main class="container">
+  <h1>REST API Words</h1>
+  <p>Esta API te permite obtener palabras aleatorias.</p>
+
+  <section>
     <h2>Endpoints v1</h2>
     <ul>
       <li>
@@ -20,11 +22,54 @@
         <strong><a href="/api/v1/words?length=3" target="_blank">GET /api/v1/words?length=3</a></strong><br>
         Devuelve una palabra aleatoria de <code>3</code> letras (entre 3 y 13).
       </li>
+      <li>
+        <strong><a href="/api/v1/words/all" target="_blank">GET /api/v1/words/all</a></strong><br>
+        Devuelve <strong>todas</strong> las palabras disponibles en la base de datos (incluyendo las nuevas guardadas).
+      </li>
     </ul>
     <h3>Ejemplo de respuesta v1</h3>
     <pre>{
   "word": "mar"
-}</pre>    
-  </main>
+}</pre>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Endpoints v2</h2>
+    <p>Nuevas funcionalidades con soporte para múltiples idiomas y conexión a fuentes externas.</p>
+    <ul>
+      <li>
+        <strong><a href="/api/v2/languages" target="_blank">GET /api/v2/languages</a></strong><br>
+        Devuelve la lista de códigos de idioma soportados (ej: 'es', 'en', 'it').
+      </li>
+      <li>
+        <strong><a href="/api/v2/words?length=5&lang=es" target="_blank">GET /api/v2/words?length=5&lang=es</a></strong><br>
+        Devuelve una palabra aleatoria filtrada por longitud e idioma. <br>
+        <em>Parámetros:</em> <code>length</code> (número) y <code>lang</code> (código de idioma).
+      </li>
+    </ul>
+
+    <h3>Ejemplos de respuesta v2</h3>
+
+    <strong>Idiomas:</strong>
+    <pre>{
+  "languages": [
+    "zh",
+    "pt-br",
+    "es",
+    "de",
+    "it",
+    "fr"
+  ]
+}</pre>
+
+    <strong>Palabra (Proxy):</strong>
+    <pre>{
+  "word": "gato"
+}</pre>
+  </section>
+
+</main>
 </body>
 </html>
