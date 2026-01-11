@@ -1,4 +1,5 @@
 // app.js
+require('dotenv').config();
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
@@ -104,6 +105,96 @@ app.get('/api/v1/words/all', (req, res) => {
     words: words,
     total: words.length
   });
+});
+
+// v3: Chuck Norris API
+app.get('/api/v3/jokes/chucknorris', async (req, res) => {
+  try {
+    const response = await fetch('https://api.chucknorris.io/jokes/random?category=dev');
+
+    if (!response.ok) return res.status(response.status).end('Error al obtener la broma');
+
+    const data = await response.json();
+
+    // Devolvemos la broma y el icono
+    res.status(200).json({
+      joke: data.value,
+      icon: data.icon_url,
+      category: data.categories[0]
+    });
+
+  } catch (error) {
+    res.status(500).end('Error interno al conectar con Chuck Norris API');
+  }
+});
+
+// v3: PokeAPI (Pikachu - ID 25)
+app.get('/api/v3/pokemon/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    if (!response.ok) return res.status(response.status).end('Pokemon no encontrado (¡Imposible!)');
+    const data = await response.json();
+    res.status(200).json({
+      name: data.name,
+      id: data.id,
+      height: data.height,
+      weight: data.weight,
+      image: data.sprites.front_default
+    });
+  } catch (error) {
+    res.status(500).end('Error al conectar con PokeAPI');
+  }
+});
+
+// v3: Trivia API (3 preguntas de historia)
+app.get('/api/v3/trivia/history', async (req, res) => {
+  try {
+    const response = await fetch('https://opentdb.com/api.php?amount=3&category=23');
+    if (!response.ok) return res.status(response.status).json({ error: "Error en Trivia API" });
+    const data = await response.json();
+
+    const questions = data.results.map(q => ({
+      question: q.question,
+      correct_answer: q.correct_answer,
+      all_answers: [...q.incorrect_answers, q.correct_answer].sort() // Mezclamos respuestas (simple)
+    }));
+
+    res.status(200).json({
+      category: "History",
+      amount: 3,
+      questions: questions
+    });
+  } catch (error) {
+    res.status(500).end('Error al conectar con Trivia API');
+  }
+});
+
+// v3: Open Weather (Barcelona)
+app.get('/api/v3/weather/barcelona', async (req, res) => {
+  try {
+    const apiKey = process.env.OPENWEATHER_API_KEY;
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=Madrid&appid=${apiKey}&units=metric`;
+
+    // Coordenadas de Barcelona: 41.3947, 2.1694 (Open-Meteo)
+    if (!apiKey) url = 'https://api.open-meteo.com/v1/forecast?latitude=41.3947&longitude=2.1694&current_weather=true';
+
+    const response = await fetch(url);
+
+    if (!response.ok) return res.status(response.status).end('Error al obtener el clima');
+
+    const data = await response.json();
+
+    // Adaptamos la respuesta
+    // Si usaras OpenWeather, la estructura sería diferente (data.main.temp, etc.)
+    res.status(200).json({
+      city: data.name,
+      temperature: data.main.temp,
+    });
+
+  } catch (error) {
+    res.status(500).end('Error al conectar con el servicio de clima');
+  }
 });
 
 // 404 para rutas no existentes
