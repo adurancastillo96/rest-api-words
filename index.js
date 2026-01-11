@@ -56,9 +56,7 @@ app.get('/api/v2/words', async (req, res) => {
   const wordLength = Number(length) || 5;
   const language = lang || "es";
 
-  if (!LANGUAGES.includes(language)) {
-    return res.status(400).end('Idioma no soportado" ');
-  }
+  if (!LANGUAGES.includes(language)) return res.status(400).end('Idioma no soportado');
 
   // const apiUrl = `https://random-words-api.kushcreates.com/api?language=${language}&length=${wordLength}&words=1`;
   const apiUrl = new URL('https://random-words-api.kushcreates.com/api');
@@ -174,7 +172,7 @@ app.get('/api/v3/trivia/history', async (req, res) => {
 app.get('/api/v3/weather/barcelona', async (req, res) => {
   try {
     const apiKey = process.env.OPENWEATHER_API_KEY;
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=Madrid&appid=${apiKey}&units=metric`;
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=Barcelona&appid=${apiKey}&units=metric`;
 
     // Coordenadas de Barcelona: 41.3947, 2.1694 (Open-Meteo)
     if (!apiKey) url = 'https://api.open-meteo.com/v1/forecast?latitude=41.3947&longitude=2.1694&current_weather=true';
